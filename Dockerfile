@@ -32,7 +32,7 @@ ARG python_version=3.5
 
 RUN conda install -y python=${python_version} && \
     pip install --upgrade pip && \
-    conda install -c https://conda.binstar.org/menpo opencv3 && \
+    conda install opencv Pillow && \
     conda install tensorflow Cython && \
     conda clean -yt
 
