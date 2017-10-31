@@ -20,8 +20,7 @@ except ImportError:
 
 from yolo import YOLO
 
-ROOT = os.path.join(os.path.normpath(os.path.dirname(__file__)), 'client')
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 config_file = './pytorch-yolo2/cfg/tiny-yolo-voc.cfg'
 weight_file = 'weights/tiny-yolo-voc.weights'
 yolo = YOLO(config_file, weight_file)
@@ -42,7 +41,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 
     def loop(self):
         """Sends camera images in an infinite loop."""
-        sio = io.StringIO()
+        sio = io.BytesIO()
 
         _, frame = camera.read()
         if frame is None:

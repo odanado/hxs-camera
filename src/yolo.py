@@ -18,7 +18,7 @@ class YOLO(object):
             bottomright = box['bottomright']
             color = self.colors[self.labels.index(label)]
             cv2.putText(img, label, (topleft['x'], topleft['y']),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 1)
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, color, 2)
             cv2.rectangle(img, (topleft['x'], topleft['y']),
                           (bottomright['x'], bottomright['y']), color, 2)
 
