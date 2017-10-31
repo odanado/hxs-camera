@@ -1,0 +1,3 @@
+[submodule "pytorch-yolo2"]
+	path = pytorch-yolo2
+	url = https://github.com/marvis/pytorch-yolo2
