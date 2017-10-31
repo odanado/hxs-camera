@@ -1,41 +1,32 @@
-import sys
-
-sys.path.append('pytorch-yolo2')  # NOQA
+from darkflow.net.build import TFNet
 import cv2
 
 
-from darknet import Darknet
-from utils import load_class_names, do_detect, plot_boxes_cv2
-
-
 class YOLO(object):
-    def __init__(self, config_file, weight_file,
-                 conf_thresh=0.5, nms_thresh=0.4):
-        self.darknet = Darknet(config_file)
-        self.darknet.load_weights(weight_file)
 
-        self.conf_thresh = conf_thresh
-        self.nms_thresh = nms_thresh
+    def __init__(self, config_file, weight_file, threshold=0.5):
+        options = {"model": config_file,
+                   "load": weight_file, "threshold": threshold}
+        self.tfnet = TFNet(options)
+        self.colors = self.tfnet.meta['colors']
+        self.labels = self.tfnet.meta['labels']
 
-        self.class_names = self.load_class_names()
+    def draw_bbox(self, img, bboxes):
+        for box in bboxes:
+            label = box['label']
+            topleft = box['topleft']
+            bottomright = box['bottomright']
+            color = self.colors[self.labels.index(label)]
+            cv2.putText(img, label, (topleft['x'], topleft['y']),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 1)
+            cv2.rectangle(img, (topleft['x'], topleft['y']),
+                          (bottomright['x'], bottomright['y']), color, 2)
 
-    def load_class_names(self):
-        if self.darknet.num_classes == 20:
-            names_file = 'pytorch-yolo2/data/voc.names'
-        elif self.darknet.num_classes == 80:
-            names_file = 'pytorch-yolo2/data/coco.names'
-        else:
-            names_file = 'pytorch-yolo2/data/names'
-        class_names = load_class_names(names_file)
-        return class_names
+        return img
 
     def detect(self, img):
-        width, height = self.darknet.width, self.darknet.height
-        sized = cv2.resize(img, (width, height))
-        bboxes = do_detect(self.darknet, sized,
-                           self.conf_thresh, self.nms_thresh, False)
-
-        draw_img = plot_boxes_cv2(sized, bboxes, None, self.class_names)
+        bboxes = self.tfnet.return_predict(img)
+        draw_img = self.draw_bbox(img, bboxes)
 
         return bboxes, draw_img
 
@@ -45,7 +36,6 @@ if __name__ == '__main__':
     weight_file = 'weights/tiny-yolo-voc.weights'
     img_file = './pytorch-yolo2/data/dog.jpg'
     yolo = YOLO(config_file, weight_file)
-    yolo.darknet.print_network()
 
     img = cv2.imread(img_file)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
