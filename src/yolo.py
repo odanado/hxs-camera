@@ -35,7 +35,7 @@ class YOLO(object):
         bboxes = do_detect(self.darknet, sized,
                            self.conf_thresh, self.nms_thresh, False)
 
-        draw_img = plot_boxes_cv2(img, bboxes, None, self.class_names)
+        draw_img = plot_boxes_cv2(sized, bboxes, None, self.class_names)
 
         return bboxes, draw_img
 
@@ -49,5 +49,8 @@ if __name__ == '__main__':
 
     img = cv2.imread(img_file)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    print(img.shape)
     # print(img)
     bboxes, draw_img = yolo.detect(img)
+    print(bboxes)
+    print(draw_img)
