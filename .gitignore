@@ -102,3 +102,5 @@ ENV/
 
 weights/
 summary/
+cfg/
+data/
