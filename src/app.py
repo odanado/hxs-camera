@@ -21,7 +21,7 @@ except ImportError:
 from yolo import YOLO
 
 camera = cv2.VideoCapture(0)
-config_file = './pytorch-yolo2/cfg/tiny-yolo-voc.cfg'
+config_file = 'cfg/tiny-yolo-voc.cfg'
 weight_file = 'weights/tiny-yolo-voc.weights'
 yolo = YOLO(config_file, weight_file)
 

@@ -32,9 +32,9 @@ class YOLO(object):
 
 
 if __name__ == '__main__':
-    config_file = './pytorch-yolo2/cfg/tiny-yolo-voc.cfg'
+    config_file = './cfg/tiny-yolo-voc.cfg'
     weight_file = 'weights/tiny-yolo-voc.weights'
-    img_file = './pytorch-yolo2/data/dog.jpg'
+    img_file = './data/dog.jpg'
     yolo = YOLO(config_file, weight_file)
 
     img = cv2.imread(img_file)
