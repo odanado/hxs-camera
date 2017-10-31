@@ -36,6 +36,8 @@ RUN conda install -y python=${python_version} && \
     conda install pytorch torchvision -c soumith && \
     conda clean -yt
 
+RUN pip install tornado
+
 ENV PYTHONPATH='/src/:$PYTHONPATH'
 
 WORKDIR /src
