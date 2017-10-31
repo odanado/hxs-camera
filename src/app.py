@@ -69,5 +69,6 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
+    print('server starting')
     application.listen(8080)
     tornado.ioloop.IOLoop.instance().start()
