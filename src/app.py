@@ -20,6 +20,7 @@ except ImportError:
 
 from yolo import YOLO
 
+print('loading...')
 camera = cv2.VideoCapture(0)
 config_file = 'cfg/tiny-yolo-voc.cfg'
 weight_file = 'weights/tiny-yolo-voc.weights'
