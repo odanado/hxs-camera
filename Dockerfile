@@ -9,7 +9,7 @@ RUN mkdir -p $CONDA_DIR && \
     echo export PATH=$CONDA_DIR/bin:'$PATH' > /etc/profile.d/conda.sh && \
     apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y wget git bzip2 --no-install-recommends && \
+    apt-get install -y wget git bzip2 g++ --no-install-recommends && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* && \
     wget --quiet --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.2.12-Linux-x86_64.sh && \
     echo "c59b3dd3cad550ac7596e0d599b91e75d88826db132e4146030ef471bb434e9a *Miniconda3-4.2.12-Linux-x86_64.sh" | sha256sum -c - && \
@@ -28,13 +28,17 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
 USER $NB_USER
 
 
-ARG python_version=2.7
+ARG python_version=3.5
 
 RUN conda install -y python=${python_version} && \
     pip install --upgrade pip && \
-    conda install opencv && \
-    conda install pytorch torchvision -c soumith && \
+    conda install -c https://conda.binstar.org/menpo opencv3 && \
+    conda install tensorflow Cython && \
     conda clean -yt
+
+RUN cd /tmp && \
+    git clone git://github.com/thtrieu/darkflow && \
+    cd darkflow && pip install .
 
 RUN pip install tornado
 
