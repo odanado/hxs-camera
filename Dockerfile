@@ -28,7 +28,7 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
 USER $NB_USER
 
 
-ARG python_version=3.5
+ARG python_version=2.7
 
 RUN conda install -y python=${python_version} && \
     pip install --upgrade pip && \
